@@ -132,6 +132,20 @@ class Ticker:
             "raw",
         )
 
+    def get_profit_margin(self) -> float:
+        if self.ticker_info is None:
+            self.ticker_info = self.yf.get_ticker_info(self.symbol)
+
+        return safeget(
+            self.ticker_info,
+            "quoteSummary",
+            "result",
+            0,
+            "defaultKeyStatistics",
+            "profitMargins",
+            "raw",
+        )
+
     def get_debt_to_equity(self) -> float:
         if self.ticker_info is None:
             self.ticker_info = self.yf.get_ticker_info(self.symbol)

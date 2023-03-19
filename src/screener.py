@@ -25,8 +25,11 @@ class Screener:
             extracy_symbol([s for s in self.markets.get_stocks_by_index("FTSE 100")])
         )
 
+    def get_snp_500(self) -> List[str]:
+        return [s["symbol"] for s in self.markets.get_stocks_by_index("S&P 500")]
+
     def scrape(self) -> bool:
-        stocks = self.get_ftse_100()
+        stocks = self.get_ftse_100() + self.get_snp_500()
 
         my_env = os.environ.copy()
         my_env["CACHE_PATH"] = self.cache_folder
@@ -76,6 +79,12 @@ class Screener:
                                 results.append(symbol)
                         case "lt":
                             if val < q[2]:
+                                results.append(symbol)
+                        case "eq":
+                            if val == q[2]:
+                                results.append(symbol)
+                        case "in":
+                            if val in q[2]:
                                 results.append(symbol)
 
         return results
